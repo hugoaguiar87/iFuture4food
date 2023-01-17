@@ -98,4 +98,14 @@ export const PageArea = styled.div`
         text-decoration: none;
         color: #000;
     }
+
+    .error--message {
+        background-color: #FFCACA;
+        margin: 10px 0;
+        color: #000;
+        border: 2px solid #FF0000;
+        padding: 10px;
+        max-width: 20.5rem;
+        opacity: 0.8;
+    }
 `;

@@ -1,14 +1,39 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageArea } from "./style";
 
 import logo2 from "../../assets/logo2.svg";
 import pass from "../../assets/pass.svg";
 import pass2 from "../../assets/pass2.svg";
 
-const LoginPage = () => {
+import { requestApi } from "../../helpers/Requests";
+import { doLogin } from "../../helpers/AuthHandler";
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-    }
+const LoginPage = () => {
+    const navigate = useNavigate()
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [error, setError] = useState(null)
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setDisabled(true);
+        setError(null)
+
+        const data = await requestApi.login(email, password);
+
+        if(data.error){
+            setError(data);
+        } else {
+            doLogin(data.token)
+            navigate("/feed")
+        };
+
+        setDisabled(false);
+    };
 
     return(
         <PageArea>
@@ -21,12 +46,21 @@ const LoginPage = () => {
                     <span> Entrar </span>
                 </div>
 
+                { error && 
+                    <div className="error--message"> {error.error.message} </div>
+                }
+
                 <form >
                     <fieldset>
                         <legend>Email*</legend>
                         <div className="input--area">
                             <input 
                                 placeholder="email@email.com"
+                                type="email"
+                                value={email}
+                                onChange={ (e) => setEmail(e.target.value) }
+                                disabled={disabled}
+                                required
                             />
                         </div>
                     </fieldset>
@@ -36,8 +70,18 @@ const LoginPage = () => {
                         <div className="input--area">
                             <input 
                                 placeholder="Mínimo 6 caracteres"
+                                type={ showPassword ? "text" : "password" }
+                                value={password}
+                                onChange={ (e) => setPassword(e.target.value) }
+                                minLength="6"
+                                disabled={disabled}
+                                required
                             />
-                            <img src={pass} alt=""/>
+                            <img 
+                                src={ showPassword ? pass2 : pass } 
+                                alt="ícone mostrar senha"
+                                onClick={ () => setShowPassword(!showPassword) }
+                            />
                         </div>
                     </fieldset>
 
@@ -45,7 +89,7 @@ const LoginPage = () => {
                 </form>
 
                 <div className="register">
-                    <span> Não possui cadastro? <a href="/">Clique aqui.</a> </span>
+                    <span> Não possui cadastro? <a href="/cadastrar">Clique aqui.</a> </span>
                 </div>
             </div>
            
