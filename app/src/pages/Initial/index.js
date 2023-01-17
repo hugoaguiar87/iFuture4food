@@ -1,7 +1,8 @@
 import ReactLoading from "react-loading";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./style.css";
+
+import { PageArea } from "./style";
 
 import logo from "../../assets/logo.svg";
 
@@ -15,12 +16,12 @@ const InitiaPage = () => {
     }, []);
 
     return(
-        <div className="pageArea">
+        <PageArea>
             <div className="logo">
                 <img src={logo} alt="logo iFuture"/>
             </div>
             <ReactLoading type="bubbles" color="#fff" />
-        </div>
+        </PageArea>
     );
 };
 
