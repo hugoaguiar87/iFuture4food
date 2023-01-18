@@ -85,7 +85,7 @@ const LoginPage = () => {
                         </div>
                     </fieldset>
 
-                    <button onClick={handleSubmit}>Entrar</button>
+                    <button onClick={handleSubmit} disabled={disabled}>Entrar</button>
                 </form>
 
                 <div className="register">
