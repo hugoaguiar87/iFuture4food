@@ -28,8 +28,12 @@ const LoginPage = () => {
         if(data.error){
             setError(data);
         } else {
-            doLogin(data.token)
-            navigate("/feed")
+            doLogin(data.token);
+            if(data.user.hasAddress){
+                navigate("/feed");
+            } else {
+                navigate("/cadastrar-endereco")
+            };            
         };
 
         setDisabled(false);
