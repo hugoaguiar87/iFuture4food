@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageArea } from "./style";
+import Cookies from "js-cookie";
 
 import logo2 from "../../assets/logo2.svg";
 import pass from "../../assets/pass.svg";
 import pass2 from "../../assets/pass2.svg";
 
 import { requestApi } from "../../helpers/Requests";
-import { doLogin } from "../../helpers/AuthHandler";
+import { doLogin, isLogged } from "../../helpers/AuthHandler";
 
 const LoginPage = () => {
     const navigate = useNavigate()
@@ -17,6 +18,26 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const logged = isLogged();
+
+        if(logged){
+            const token = Cookies.get('token');
+
+            const getUser = async() => {
+                const user = await requestApi.profile(token);
+
+                if(user.user.hasAddress){
+                    navigate('/feed');
+                } else {
+                    navigate('/cadastrar-endereco');
+                };
+            };
+
+            getUser();
+        };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
