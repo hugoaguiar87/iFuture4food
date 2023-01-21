@@ -22,7 +22,7 @@ const Router = () => {
             <Routes>
                 <Route path="/" element={ <InitiaPage /> }/>
                 <Route path="/login" element={ <LoginPage /> }/>
-                <Route path="/feed" element={ <FeedPage /> }/>
+                <Route path="/feed" element={ <PrivateRoute> <FeedPage /> </PrivateRoute> }/>
                 <Route path="/cadastrar" element={ <SignUpPage /> }/>
                 <Route path="/cadastrar-endereco" element={ <PrivateRoute> <AddressRegisterPage /> </PrivateRoute> }/>
             </Routes>

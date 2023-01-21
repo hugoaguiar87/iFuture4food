@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageArea } from "./style";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../redux/reducers/tokenReducer";
 
 import logo2 from "../../assets/logo2.svg";
 import pass from "../../assets/pass.svg";
@@ -11,7 +13,8 @@ import { requestApi } from "../../helpers/Requests";
 import { doLogin, isLogged } from "../../helpers/AuthHandler";
 
 const LoginPage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -24,6 +27,7 @@ const LoginPage = () => {
 
         if(logged){
             const token = Cookies.get('token');
+            dispatch(setToken(token));
 
             const getUser = async() => {
                 const user = await requestApi.profile(token);
@@ -50,6 +54,7 @@ const LoginPage = () => {
             setError(data);
         } else {
             doLogin(data.token);
+            dispatch(setToken(data.token));
             if(data.user.hasAddress){
                 navigate("/feed");
             } else {

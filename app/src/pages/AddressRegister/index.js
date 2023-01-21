@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { PageArea } from "./style";
 import Cookies from "js-cookie";
 import { doLogin, isLogged } from "../../helpers/AuthHandler";
 import { useNavigate } from "react-router-dom";
 import { requestApi } from "../../helpers/Requests";
+import { setToken } from "../../redux/reducers/tokenReducer";
 
 const AddressRegisterPage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [street, setStreet] = useState("");
     const [number, setNumber] = useState("");
@@ -17,17 +20,15 @@ const AddressRegisterPage = () => {
 
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
-    const [token, setToken] = useState("")
+
+    const token = useSelector((state) => state.configToken.token);
 
     useEffect(() => {
         let logged = isLogged();
 
-        if(logged){
-            const userToken = Cookies.get("token");
-            setToken(userToken);
-        } else {
-            navigate("/")
-        };
+        if(!logged){
+            navigate("/");
+        }; 
 
     }, []);
 
@@ -42,6 +43,7 @@ const AddressRegisterPage = () => {
             setError(data);
         } else {
             doLogin(data.token);
+            dispatch(setToken(data.token));
             navigate("/feed");
         };
 
