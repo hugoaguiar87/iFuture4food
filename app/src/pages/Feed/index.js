@@ -15,7 +15,6 @@ const FeedPage = () => {
 
     const [token, setToken] = useState(null);
     const [error, setError] = useState(null);
-    const [scrollCateg, setScrollCateg] = useState(0)
 
     useEffect(() => {
         setToken(Cookies.get('token'));
@@ -51,6 +50,8 @@ const FeedPage = () => {
         };
     }, [allRestaurants]);
 
+    console.log(allRestaurants)
+
     return(
         <PageArea>
                 <div className="title">
@@ -77,10 +78,25 @@ const FeedPage = () => {
                         </div>
                         
                     </div>
-                    
 
-                    <div>
-                        Restaurantes
+                    <div className="restaurants">
+                        {allRestaurants && allRestaurants.restaurants.length > 0 && allRestaurants.restaurants.map((iten, index) => {
+                            return(
+                                <div className="rest--container" key={index}>
+                                    <div className="rest--image">
+                                        <img src={iten.logoUrl} alt=""/>
+                                    </div>
+
+                                    <div className="rest--infos">
+                                        <span className="rest--info--name"> {iten.name} </span>
+                                        <div className="rest--infos--details">
+                                            <span> {iten.deliveryTime} min</span>
+                                            <span> Frete R$ {iten.shipping.toFixed(2)} </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
 
                 </div>

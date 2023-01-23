@@ -9,7 +9,7 @@ export const PageArea = styled.div`
     min-height: 100vh;
     font-family: 'Roboto', sans-serif;
     /* margin: 0 530px ; */
-    /* overflow-x: hidden; */
+    overflow-x: hidden;
 
     .title{
         border-bottom: 1px solid #DDD;
@@ -24,6 +24,7 @@ export const PageArea = styled.div`
         right: 0;
         left: 0;
         z-index: 999;
+        background-color: #FFF;
     };
 
     .body{
@@ -31,13 +32,15 @@ export const PageArea = styled.div`
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
+        margin-top: 80px;
+        margin-bottom: 95px;
     };
 
     .body .search{
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 80px;
+        /* margin-top: 80px; */
         margin-bottom: 30px;
         border: 1px solid #b8b8b8;
         height: 70px;
@@ -67,13 +70,13 @@ export const PageArea = styled.div`
         font-size: 20px;
         min-height: 80px;
         width: 100vw;
-        margin-bottom: 40px;
+        margin-bottom: 25px;
     };
 
     .body .categories--list{
         height: 100%;
         display: flex;
-        align-items: center;
+        /* align-items: center; */
         justify-content: center;
         flex-wrap: wrap;
     };
@@ -81,6 +84,54 @@ export const PageArea = styled.div`
     .body .categories .categories--iten{
         margin: 5px 15px;
         cursor: pointer;
+    };
+
+    .body .restaurants{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    };
+
+    .body .rest--container{
+        border: 1px solid #b8b8b8;
+        border-radius: 8px;
+        width: 20.5rem;
+        height: 11.75rem;
+        margin: 10px;
+        cursor: pointer;
+        transform: scale(0.9);
+        transition: all ease 0.3s;
+
+        &:hover{
+            transform: scale(1);
+        };
+    };
+
+    .body .rest--image{
+        width: 100%;
+        height: 7.5rem;
+    };
+
+    .body .rest--image img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    };
+
+    .body .rest--infos{
+        margin-top: 10px;
+        padding: 0 10px;
+        font-size: 18px;
+    };
+
+    .body .rest--infos .rest--info--name{
+        color: #e8222e;
+    };
+
+    .body .rest--infos .rest--infos--details{
+        display: flex;
+        justify-content: space-between;
+        color: #b8b8b8;
     };
 
     .cards{
@@ -94,10 +145,11 @@ export const PageArea = styled.div`
         left: 0;
         height: 90px;
         gap: 150px;
-        cursor: pointer;
+        background-color: #FFF;
     };
 
     .cards img{
         height: 50px;
+        cursor: pointer;
     }
 `;
