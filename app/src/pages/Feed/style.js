@@ -50,6 +50,7 @@ export const PageArea = styled.div`
 
     .body .search img{
         height: 100%;
+        cursor: pointer;
     };
 
     .body .search input{

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { PageArea } from "./style";
+import { useNavigate } from "react-router-dom";
 
 import { requestApi } from "../../helpers/Requests";
 
@@ -10,6 +11,8 @@ import homecart from "../../assets/homecart.svg";
 import shoppingcart from "../../assets/shoppingcart.svg";
 
 const FeedPage = () => {
+    const navigate = useNavigate();
+
     const [allRestaurants, setAllRestaurants] = useState(null);
     const [categories, setCategories] = useState([]);
     const [query, setQuery] = useState("");
@@ -60,10 +63,6 @@ const FeedPage = () => {
         };
     };
 
-    console.log(allRestaurants)
-    // console.log(categories)
-    console.log(query)
-
     return(
         <PageArea>
                 <div className="title">
@@ -71,15 +70,21 @@ const FeedPage = () => {
                 </div>
 
                 <div className="body">
-                    <div className="search">
-                        <img src={search} alt="lupa"/>
+                    <form method="GET" action="/search" className="search">
+                        <img 
+                            src={search} 
+                            alt="lupa" 
+                            onClick={() => navigate(`/search?query=${query}`)}
+                        />
                         <input 
                             placeholder="Restaurante"
+                            name="query"
                             type="text"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
+                            autoComplete="off"
                         />
-                    </div>
+                    </form>
 
                     <div className="categories">
                         <div className="categories--list">
@@ -109,16 +114,13 @@ const FeedPage = () => {
                                     return false
                                 };
 
-                            }).filter((i) => {
-                                if(i.name.toLowerCase().includes( query.toLowerCase() )){
-                                    return true
-                                } else {
-                                    return false
-                                };
-
                             }).map((iten, index) => {
                                 return(
-                                    <div className="rest--container" key={index}>
+                                    <div 
+                                        className="rest--container" 
+                                        key={index}
+                                        onClick={() => navigate(`/restaurant/${iten.id}`)}
+                                    >
                                         <div className="rest--image">
                                             <img src={iten.logoUrl} alt=""/>
                                         </div>
@@ -144,11 +146,19 @@ const FeedPage = () => {
                     </div>
 
                     <div>
-                        <img src={shoppingcart} alt=""/>
+                        <img 
+                            src={shoppingcart} 
+                            alt=""
+                            onClick={() => alert("Página em construção!")}
+                        />
                     </div>
 
                     <div>
-                        <img src={avatarcart} alt=""/>
+                        <img 
+                            src={avatarcart} 
+                            alt=""
+                            onClick={() => alert("Página em construção!")}
+                        />
                     </div>
                 </div>
         </PageArea>
