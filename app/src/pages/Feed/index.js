@@ -12,6 +12,8 @@ import shoppingcart from "../../assets/shoppingcart.svg";
 const FeedPage = () => {
     const [allRestaurants, setAllRestaurants] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [query, setQuery] = useState("");
+    const [active, setActive] = useState(null);
 
     const [token, setToken] = useState(null);
     const [error, setError] = useState(null);
@@ -50,7 +52,17 @@ const FeedPage = () => {
         };
     }, [allRestaurants]);
 
+    const handleActiveCategory = (cat) => {
+        if(cat === active){
+            setActive(null);
+        } else {
+            setActive(cat);
+        };
+    };
+
     console.log(allRestaurants)
+    // console.log(categories)
+    console.log(query)
 
     return(
         <PageArea>
@@ -63,6 +75,9 @@ const FeedPage = () => {
                         <img src={search} alt="lupa"/>
                         <input 
                             placeholder="Restaurante"
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
                         />
                     </div>
 
@@ -70,7 +85,11 @@ const FeedPage = () => {
                         <div className="categories--list">
                             { categories.length > 0 && categories.map((iten, key) => {
                                 return(
-                                    <div key={key} className="categories--iten">
+                                    <div 
+                                        key={key} 
+                                        className={active === iten ? "categories--iten active" : "categories--iten"} 
+                                        onClick={() => handleActiveCategory(iten)}
+                                    >
                                         {iten}
                                     </div>
                                 )
@@ -80,23 +99,41 @@ const FeedPage = () => {
                     </div>
 
                     <div className="restaurants">
-                        {allRestaurants && allRestaurants.restaurants.length > 0 && allRestaurants.restaurants.map((iten, index) => {
-                            return(
-                                <div className="rest--container" key={index}>
-                                    <div className="rest--image">
-                                        <img src={iten.logoUrl} alt=""/>
-                                    </div>
+                        {allRestaurants && allRestaurants.restaurants.length > 0 && 
+                            allRestaurants.restaurants.filter((i) => {
+                                if(!active){
+                                    return true
+                                } else if (active && i.category === active){
+                                    return true
+                                } else {
+                                    return false
+                                };
 
-                                    <div className="rest--infos">
-                                        <span className="rest--info--name"> {iten.name} </span>
-                                        <div className="rest--infos--details">
-                                            <span> {iten.deliveryTime} min</span>
-                                            <span> Frete R$ {iten.shipping.toFixed(2)} </span>
+                            }).filter((i) => {
+                                if(i.name.toLowerCase().includes( query.toLowerCase() )){
+                                    return true
+                                } else {
+                                    return false
+                                };
+
+                            }).map((iten, index) => {
+                                return(
+                                    <div className="rest--container" key={index}>
+                                        <div className="rest--image">
+                                            <img src={iten.logoUrl} alt=""/>
+                                        </div>
+
+                                        <div className="rest--infos">
+                                            <span className="rest--info--name"> {iten.name} </span>
+                                            <div className="rest--infos--details">
+                                                <span> {iten.deliveryTime} min</span>
+                                                <span> Frete {iten.shipping ? `R$ ${iten.shipping.toFixed(2)}` : "Grátis"} </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })
+                        }
                     </div>
 
                 </div>

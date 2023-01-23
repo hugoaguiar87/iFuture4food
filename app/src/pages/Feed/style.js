@@ -86,6 +86,10 @@ export const PageArea = styled.div`
         cursor: pointer;
     };
 
+    .body .categories .active{
+        color: #e8222e;
+    };
+
     .body .restaurants{
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
