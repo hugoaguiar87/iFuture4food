@@ -14,6 +14,7 @@ const RestaurantPage = () => {
     
     const [restInfos, setRestInfos] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
 
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -51,17 +52,89 @@ const RestaurantPage = () => {
             };
 
             setCategories(arrayCategs);
+            setProducts(restInfos.restaurant.products);
         };
     }, [restInfos]);
 
     console.log(restInfos)
-    console.log(categories)
+    console.log(products)
 
     return(
         <PageArea>
             <div className="title">
                 <img src={back} alt="Voltar" onClick={() => navigate("/feed")}/>
                 <span>Restaurante</span>
+            </div>
+
+            <div className="body">
+                {restInfos &&
+                    <div className="restaurant">
+                        <div className="rest--image">
+                            <img src={restInfos.restaurant.logoUrl} alt="Logo"/>
+                        </div>
+
+                        <div className="rest--name">
+                            <span>{restInfos.restaurant.name}</span>
+                        </div>
+
+                        <div className="rest--categ">
+                            <span>{restInfos.restaurant.category}</span>
+                        </div>
+
+                        <div className="rest--infos">
+                            <span>{restInfos.restaurant.deliveryTime} min</span>
+                            <span>Frete {restInfos.restaurant.shipping ? `R$ ${restInfos.restaurant.shipping.toFixed(2)}` : "Grátis"}</span>
+                        </div>
+
+                        <div className="rest--address">
+                            <span>{restInfos.restaurant.address}</span>
+                        </div>
+                    </div>
+                }
+
+                {categories && categories.length > 0 &&
+                    categories.map((iten, index) => {
+                        return(
+                            <div className="category--container" key={index}>
+                                <div className="category--name">
+                                    <span>{iten}</span>
+                                    <hr noshade="noshade"/>
+                                </div>
+
+                                <div className="product--area">
+                                    {products && products.length > 0 && 
+                                        products.filter((i) => {
+                                            if(i.category === iten){
+                                                return true
+                                            } else {
+                                                return false
+                                            }
+                                        }).map((p, pKey) => {
+                                            return(
+                                                <div className="product--container" key={pKey}>
+                                                    <div className="product--image">
+                                                        <img src={p.photoUrl} alt="Product"/>
+                                                    </div>
+
+                                                    <div className="product--infos">
+                                                        <span className="qtd">2</span>
+                                                        <button>Adicionar</button>
+
+                                                        <div className="product--details">
+                                                            <span>{p.name}</span>
+                                                            <span>{p.description}</span>
+                                                            <span>R$ {p.price}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
         </PageArea>
     );
