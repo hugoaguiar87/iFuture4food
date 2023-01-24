@@ -35,7 +35,7 @@ const FeedPage = () => {
                 setLoading(false);
                 setError(rest);
             } else {
-                setLoading(false)
+                setLoading(false);
                 setAllRestaurants(rest);
                 setError(null);
             };            
@@ -68,118 +68,116 @@ const FeedPage = () => {
         };
     };
 
-    console.log(error)
-
     return(
         <PageArea>
-                <div className="title">
-                    <span>Ifuture</span>
+            <div className="title">
+                <span>Ifuture</span>
+            </div>
+
+            <div className="body">
+                <form method="GET" action="/search" className="search">
+                    <img 
+                        src={search} 
+                        alt="lupa" 
+                        onClick={() => navigate(`/search?query=${query}`)}
+                    />
+                    <input 
+                        placeholder="Restaurante"
+                        name="query"
+                        type="text"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        autoComplete="off"
+                    />
+                </form>
+
+                <div className="categories">
+                    <div className="categories--list">
+                        { categories.length > 0 && categories.map((iten, key) => {
+                            return(
+                                <div 
+                                    key={key} 
+                                    className={active === iten ? "categories--iten active" : "categories--iten"} 
+                                    onClick={() => handleActiveCategory(iten)}
+                                >
+                                    {iten}
+                                </div>
+                            )
+                        }) }
+                    </div>
+                    
                 </div>
 
-                <div className="body">
-                    <form method="GET" action="/search" className="search">
-                        <img 
-                            src={search} 
-                            alt="lupa" 
-                            onClick={() => navigate(`/search?query=${query}`)}
-                        />
-                        <input 
-                            placeholder="Restaurante"
-                            name="query"
-                            type="text"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            autoComplete="off"
-                        />
-                    </form>
+                {!allRestaurants && loading && 
+                    <div className="loading">
+                        <ReactLoading type="spinningBubbles" color="#e8222e"/>
+                    </div>
+                }
 
-                    <div className="categories">
-                        <div className="categories--list">
-                            { categories.length > 0 && categories.map((iten, key) => {
-                                return(
-                                    <div 
-                                        key={key} 
-                                        className={active === iten ? "categories--iten active" : "categories--iten"} 
-                                        onClick={() => handleActiveCategory(iten)}
-                                    >
-                                        {iten}
+                {!allRestaurants && !loading && error &&
+                    <div className="error--message">
+                        Erro: {error.error.message}
+                    </div>
+                }
+
+                <div className="restaurants">
+                    {allRestaurants && allRestaurants.restaurants.length > 0 && 
+                        allRestaurants.restaurants.filter((i) => {
+                            if(!active){
+                                return true
+                            } else if (active && i.category === active){
+                                return true
+                            } else {
+                                return false
+                            };
+
+                        }).map((iten, index) => {
+                            return(
+                                <div 
+                                    className="rest--container" 
+                                    key={index}
+                                    onClick={() => navigate(`/restaurant/${iten.id}`)}
+                                >
+                                    <div className="rest--image">
+                                        <img src={iten.logoUrl} alt=""/>
                                     </div>
-                                )
-                            }) }
-                        </div>
-                        
-                    </div>
 
-                    {!allRestaurants && loading && 
-                        <div className="loading">
-                            <ReactLoading type="spinningBubbles" color="#e8222e"/>
-                        </div>
-                    }
-
-                    {!allRestaurants && !loading && error &&
-                        <div className="error--message">
-                            Erro: {error.error.message}
-                        </div>
-                    }
-
-                    <div className="restaurants">
-                        {allRestaurants && allRestaurants.restaurants.length > 0 && 
-                            allRestaurants.restaurants.filter((i) => {
-                                if(!active){
-                                    return true
-                                } else if (active && i.category === active){
-                                    return true
-                                } else {
-                                    return false
-                                };
-
-                            }).map((iten, index) => {
-                                return(
-                                    <div 
-                                        className="rest--container" 
-                                        key={index}
-                                        onClick={() => navigate(`/restaurant/${iten.id}`)}
-                                    >
-                                        <div className="rest--image">
-                                            <img src={iten.logoUrl} alt=""/>
-                                        </div>
-
-                                        <div className="rest--infos">
-                                            <span className="rest--info--name"> {iten.name} </span>
-                                            <div className="rest--infos--details">
-                                                <span> {iten.deliveryTime} min</span>
-                                                <span> Frete {iten.shipping ? `R$ ${iten.shipping.toFixed(2)}` : "Grátis"} </span>
-                                            </div>
+                                    <div className="rest--infos">
+                                        <span className="rest--info--name"> {iten.name} </span>
+                                        <div className="rest--infos--details">
+                                            <span> {iten.deliveryTime} min</span>
+                                            <span> Frete {iten.shipping ? `R$ ${iten.shipping.toFixed(2)}` : "Grátis"} </span>
                                         </div>
                                     </div>
-                                )
-                            })
-                        }
-                    </div>
-
+                                </div>
+                            )
+                        })
+                    }
                 </div>
 
-                <div className="cards">
-                    <div>
-                        <img src={homecart} alt=""/>
-                    </div>
+            </div>
 
-                    <div>
-                        <img 
-                            src={shoppingcart} 
-                            alt=""
-                            onClick={() => alert("Página em construção!")}
-                        />
-                    </div>
-
-                    <div>
-                        <img 
-                            src={avatarcart} 
-                            alt=""
-                            onClick={() => alert("Página em construção!")}
-                        />
-                    </div>
+            <div className="cards">
+                <div>
+                    <img src={homecart} alt=""/>
                 </div>
+
+                <div>
+                    <img 
+                        src={shoppingcart} 
+                        alt=""
+                        onClick={() => alert("Página em construção!")}
+                    />
+                </div>
+
+                <div>
+                    <img 
+                        src={avatarcart} 
+                        alt=""
+                        onClick={() => alert("Página em construção!")}
+                    />
+                </div>
+            </div>
         </PageArea>
     );
 };
