@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { PageArea } from "./style";
 import { useNavigate } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 import { requestApi } from "../../helpers/Requests";
 
@@ -20,6 +21,7 @@ const FeedPage = () => {
 
     const [token, setToken] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setToken(Cookies.get('token'));
@@ -27,10 +29,13 @@ const FeedPage = () => {
 
     useEffect(() => {
         const getRestaurants = async() => {
+            setLoading(true);
             const rest = await requestApi.restaurants(token);
             if(rest.error){
+                setLoading(false);
                 setError(rest);
             } else {
+                setLoading(false)
                 setAllRestaurants(rest);
                 setError(null);
             };            
@@ -62,6 +67,8 @@ const FeedPage = () => {
             setActive(cat);
         };
     };
+
+    console.log(error)
 
     return(
         <PageArea>
@@ -102,6 +109,18 @@ const FeedPage = () => {
                         </div>
                         
                     </div>
+
+                    {!allRestaurants && loading && 
+                        <div className="loading">
+                            <ReactLoading type="spinningBubbles" color="#e8222e"/>
+                        </div>
+                    }
+
+                    {!allRestaurants && !loading && error &&
+                        <div className="error--message">
+                            Erro: {error.error.message}
+                        </div>
+                    }
 
                     <div className="restaurants">
                         {allRestaurants && allRestaurants.restaurants.length > 0 && 

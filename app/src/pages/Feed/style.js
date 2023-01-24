@@ -156,5 +156,16 @@ export const PageArea = styled.div`
     .cards img{
         height: 50px;
         cursor: pointer;
-    }
+    };
+
+    .error--message {
+        background-color: #FFCACA;
+        margin: 10px 0;
+        color: #000;
+        border: 2px solid #FF0000;
+        padding: 10px;
+        max-width: 20.5rem;
+        opacity: 0.8;
+        font-size: 25px;
+    };
 `;
