@@ -66,6 +66,20 @@ const getRestaurants = async (token) => {
     return req;
 };
 
+const getRestaurantDetails = async (token, id) => {
+    const header = {
+        headers: {
+            'auth': token
+        }
+    };
+
+    const req = await axios.get(`${Api_UrlBase}/restaurants/${id}`, header)
+        .then((res) => { return res.data })
+        .catch((error) => { return { error: error.response.data } });
+    
+    return req;    
+};
+
 export const requestApi = {
     login: async (email, password) => {
         return await postSignIn(email, password);
@@ -81,5 +95,8 @@ export const requestApi = {
     },
     restaurants: async (token) => {
         return await getRestaurants(token);
+    },
+    restaurantDetails: async (token, id) => {
+        return await getRestaurantDetails(token, id);
     }
 };

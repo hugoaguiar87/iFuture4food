@@ -34,7 +34,6 @@ export const PageArea = styled.div`
         img{
             cursor: pointer;
             margin-left: 15px;
-            /* margin-right: -39px; */
         };
     };
 
