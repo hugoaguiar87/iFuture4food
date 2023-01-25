@@ -117,13 +117,15 @@ const RestaurantPage = () => {
                                                     </div>
 
                                                     <div className="product--infos">
-                                                        <span className="qtd">2</span>
-                                                        <button>Adicionar</button>
-
                                                         <div className="product--details">
-                                                            <span>{p.name}</span>
-                                                            <span>{p.description}</span>
-                                                            <span>R$ {p.price}</span>
+                                                            <span className="name">{p.name}</span>
+                                                            <span className="description">{p.description}</span>
+                                                            <span className="price">R$ {p.price}</span>
+                                                        </div>
+
+                                                        <div className="product--buttons">
+                                                            <span className="qtd">2</span>
+                                                            <button>Adicionar</button>
                                                         </div>
                                                     </div>
                                                 </div>
