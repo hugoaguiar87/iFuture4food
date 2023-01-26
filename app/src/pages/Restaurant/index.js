@@ -1,12 +1,11 @@
 import { PageArea } from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 import { requestApi } from "../../helpers/Requests";
 
 import back from "../../assets/back.svg";
-
 
 const RestaurantPage = () => {
     const navigate = useNavigate();
@@ -16,13 +15,9 @@ const RestaurantPage = () => {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
 
-    const [token, setToken] = useState(null);
+    const token = useSelector((state) => state.reducer.configToken.token);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        setToken(Cookies.get('token'));
-    }, []);
 
     useEffect(() => {
         const getRest = async (tokenId, restId) => {

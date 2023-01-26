@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import { PageArea } from "./style";
 import { useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
+import { useSelector } from "react-redux";
 
 import { requestApi } from "../../helpers/Requests";
 
@@ -19,13 +19,9 @@ const FeedPage = () => {
     const [query, setQuery] = useState("");
     const [active, setActive] = useState(null);
 
-    const [token, setToken] = useState(null);
+    const token = useSelector((state) => state.reducer.configToken.token);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        setToken(Cookies.get('token'));
-    }, []);
 
     useEffect(() => {
         const getRestaurants = async() => {

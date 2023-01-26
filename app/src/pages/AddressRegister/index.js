@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { PageArea } from "./style";
-import Cookies from "js-cookie";
 import { doLogin, isLogged } from "../../helpers/AuthHandler";
 import { useNavigate } from "react-router-dom";
 import { requestApi } from "../../helpers/Requests";
@@ -21,7 +20,7 @@ const AddressRegisterPage = () => {
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
 
-    const token = useSelector((state) => state.configToken.token);
+    const token = useSelector((state) => state.reducer.configToken.token);
 
     useEffect(() => {
         let logged = isLogged();
