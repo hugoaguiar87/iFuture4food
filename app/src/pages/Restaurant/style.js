@@ -8,6 +8,7 @@ export const PageArea = styled.div`
     justify-content: center;
     min-height: 100vh;
     font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
 
     .title{
         border-bottom: 1px solid #DDD;
@@ -176,5 +177,113 @@ export const PageArea = styled.div`
                 opacity: 0.6;
             }
         };
+    };
+`;
+
+export const ModalArea = styled.div`
+    .modal--product{
+        height: 200px;
+        width: 100%;
+        display: flex;
+        padding: 15px;
+    };
+
+    .modal--product--image{
+        width: 40%;
+        height: 100%;
+        margin-right: 20px;
+    };
+
+    .modal--product--image img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+    };
+
+    .modal--product--infos{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    };
+
+    .modal--product--infos .name--desc{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    };
+
+    .modal--product--infos .name--desc .name{
+        color: #e8222e;
+        font-weight: bold;
+        font-size: 20px;
+    };
+
+    .modal--product--infos .name--desc .desc{
+        color: #b8b8b8;
+        font-size: 14px;
+    };
+
+    .modal--product--infos .buttons--price{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    };
+
+    .modal--product--infos .buttons--price .buttons{
+        font-size: 20px;
+        display: flex;
+
+        span{
+            color: #fff;
+            margin-right: 5px;
+            background-color: #e8222e;
+            border-radius: 20px;
+            width: 25px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        };
+    };
+
+    .modal--product--infos .buttons--price .price{
+        font-size: 25px;
+        margin-left: 100px;
+        font-weight: bold;
+        color: #e8222e;
+    };
+
+    .modal--buttons{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    };
+
+    .modal--buttons button{
+        border: none;
+        border-radius: 5px;
+        background-color: #e8222e;
+        margin-left: 30px;
+        height: 25px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: #fff;
+        box-shadow: 1px 2px 2px 1px #b8b8b8;
+        font-size: 15px;
+
+        &:hover{
+            background-color: rgb(232, 34, 46, 0.7);
+        };
+    };
+
+    .modal--buttons .big{
+        font-size: 20px;
+        height: 50px;
     };
 `;

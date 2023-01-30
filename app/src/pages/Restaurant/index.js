@@ -1,4 +1,4 @@
-import { PageArea } from "./style";
+import { ModalArea, PageArea } from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { requestApi } from "../../helpers/Requests";
 
 import back from "../../assets/back.svg";
+import Modal from "../../components/Modal";
 
 const RestaurantPage = () => {
     const navigate = useNavigate();
@@ -18,6 +19,9 @@ const RestaurantPage = () => {
     const token = useSelector((state) => state.reducer.configToken.token);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [modalAddQuantity, setModalAddQuantity] = useState(false);
+    const [productModal, setProductModal] = useState(null);
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         const getRest = async (tokenId, restId) => {
@@ -51,8 +55,69 @@ const RestaurantPage = () => {
         };
     }, [restInfos]);
 
+    const addQuantity = () => {
+        const modalClose = () => {
+            setModalAddQuantity(false);
+            setProductModal(null);
+            setQuantity(1);
+        };
+
+        const increase = () => {
+            setQuantity(quantity+1);
+        };
+
+        const decrease = () => {
+            if(quantity > 1){
+                setQuantity(quantity-1);
+            };
+        };
+
+        return(
+            <ModalArea>
+                {modalAddQuantity ?
+                    <Modal onClose={() => modalClose()}>
+                        <div className="modal--product">
+                           <div className="modal--product--image">
+                                <img src={productModal.photoUrl} alt="Imagem do Produto"/>
+                           </div>
+
+                           <div className="modal--product--infos">
+                                <div className="name--desc">
+                                    <span className="name">{productModal.name}</span>
+                                    <span className="desc">{productModal.description}</span>
+                                </div>
+
+                                <div className="buttons--price">
+                                    <div className="buttons">
+                                        <span onClick={decrease}>-</span>
+                                        <span>{quantity}</span>
+                                        <span onClick={increase}>+</span>
+                                    </div>
+                                    
+                                    <span className="price">R$ {(quantity*productModal.price).toFixed(2)}</span>
+                                </div>
+                           </div>
+                        </div>
+
+                        <div className="modal--buttons">
+                            <button onClick={modalClose}>Cancelar</button>
+                            <button className="big">Adicionar ao Carrinho</button>
+                        </div>
+                    </Modal>
+                    : null
+                }
+            </ModalArea>
+        )
+    };
+
+    const openModal = (product) => {
+        setProductModal(product);
+        setModalAddQuantity(true);
+    };
+
     console.log(restInfos)
     console.log(products)
+    console.log("p: ", productModal)
 
     return(
         <PageArea>
@@ -115,12 +180,16 @@ const RestaurantPage = () => {
                                                         <div className="product--details">
                                                             <span className="name">{p.name}</span>
                                                             <span className="description">{p.description}</span>
-                                                            <span className="price">R$ {p.price}</span>
+                                                            <span className="price">R$ {p.price.toFixed(2)}</span>
                                                         </div>
 
                                                         <div className="product--buttons">
                                                             <span className="qtd">2</span>
-                                                            <button>Adicionar</button>
+                                                            <button
+                                                                onClick={() => openModal(p)}
+                                                            >
+                                                                Adicionar
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -133,6 +202,8 @@ const RestaurantPage = () => {
                     })
                 }
             </div>
+
+            {addQuantity()}
         </PageArea>
     );
 };
