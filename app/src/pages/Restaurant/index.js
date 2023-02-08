@@ -1,15 +1,17 @@
 import { ModalArea, PageArea } from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { requestApi } from "../../helpers/Requests";
+import { setCart } from "../../redux/reducers/cartReducer";
 
 import back from "../../assets/back.svg";
 import Modal from "../../components/Modal";
 
 const RestaurantPage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const {id} = useParams();
     
     const [restInfos, setRestInfos] = useState(null);
@@ -17,6 +19,7 @@ const RestaurantPage = () => {
     const [products, setProducts] = useState([]);
 
     const token = useSelector((state) => state.reducer.configToken.token);
+    const cart = useSelector((state) => state.reducer.configCart.cart);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [modalAddQuantity, setModalAddQuantity] = useState(false);
@@ -72,6 +75,26 @@ const RestaurantPage = () => {
             };
         };
 
+        const addCart = () => {
+            let newCart = JSON.parse(JSON.stringify(cart));
+            
+            let key = newCart.findIndex((item) => { return item.product.id === productModal.id });
+
+            if(key > -1){
+                newCart[key].qt += quantity;
+            } else {
+                newCart.push({
+                    product: productModal,
+                    qt: quantity
+                });
+            };
+            
+            dispatch(setCart(newCart));
+            setModalAddQuantity(false);
+            setProductModal(null);
+            setQuantity(1);
+        };
+
         return(
             <ModalArea>
                 {modalAddQuantity ?
@@ -101,7 +124,7 @@ const RestaurantPage = () => {
 
                         <div className="modal--buttons">
                             <button onClick={modalClose}>Cancelar</button>
-                            <button className="big">Adicionar ao Carrinho</button>
+                            <button className="big" onClick={addCart}>Adicionar ao Carrinho</button>
                         </div>
                     </Modal>
                     : null
@@ -115,9 +138,17 @@ const RestaurantPage = () => {
         setModalAddQuantity(true);
     };
 
-    console.log(restInfos)
-    console.log(products)
-    console.log("p: ", productModal)
+    const removeProduct = (product) => {
+        let newCart = JSON.parse(JSON.stringify(cart));
+
+        const index = newCart.findIndex((iten) => {return iten.product.id === product.id});
+
+        if( index > -1 ){
+            newCart.splice(index, 1);
+        };
+
+        dispatch(setCart(newCart));
+    };
 
     return(
         <PageArea>
@@ -184,12 +215,34 @@ const RestaurantPage = () => {
                                                         </div>
 
                                                         <div className="product--buttons">
-                                                            <span className="qtd">2</span>
-                                                            <button
-                                                                onClick={() => openModal(p)}
-                                                            >
-                                                                Adicionar
-                                                            </button>
+                                                            { cart.findIndex((item) => {return item.product.id === p.id}) > -1 
+                                                                ?
+                                                                    cart.filter((i, k) => {
+                                                                        return i.product.id === p.id
+                                                                    }).map((it, key) => {
+                                                                        return (
+                                                                            <span className="qtd" key={key}>
+                                                                                {it.qt}
+                                                                            </span>
+                                                                        )
+                                                                    })
+                                                                :
+                                                                <span className="none">
+
+                                                                </span>
+                                                            }
+
+                                                            { cart.findIndex((item) => {return item.product.id === p.id}) > -1
+                                                                ?
+                                                                    <button className="remove" onClick={() => removeProduct(p)}>
+                                                                        remove
+                                                                    </button>
+                                                                :
+                                                                    <button onClick={() => openModal(p)}>
+                                                                        adicionar
+                                                                    </button>
+
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>

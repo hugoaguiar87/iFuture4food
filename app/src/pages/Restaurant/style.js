@@ -177,6 +177,16 @@ export const PageArea = styled.div`
                 opacity: 0.6;
             }
         };
+
+        .remove{
+            color: #e02020;
+            border-color: #e02020;
+        };
+
+        .none{
+            color: #FFF;
+            border-color: #fff;
+        }
     };
 `;
 
