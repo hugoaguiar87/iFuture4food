@@ -1,27 +1,34 @@
+import { PageArea } from "./styled";
 import { useEffect, useState } from "react";
-import { PageArea } from "./style";
-import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
-import { useSelector } from "react-redux";
 
 import { requestApi } from "../../helpers/Requests";
 
 import search from "../../assets/search.svg";
-import avatarcart from "../../assets/avatarcart.svg";
-import homecart from "../../assets/homecart.svg";
-import shoppingcart from "../../assets/shoppingcart.svg";
+import back from "../../assets/back.svg";
 
-const FeedPage = () => {
+const SearchPage = () => {
+    const urlParams = useLocation();
+    const useQueryString = () => {
+        return new URLSearchParams(urlParams.search);
+    };
+    const queryParams = useQueryString();
     const navigate = useNavigate();
 
-    const [allRestaurants, setAllRestaurants] = useState(null);
-    const [categories, setCategories] = useState([]);
-    const [query, setQuery] = useState("");
-    const [active, setActive] = useState(null);
+    const [query, setQuery] = useState( queryParams.get('query') !== null ? queryParams.get('query') : '' );
 
-    const token = useSelector((state) => state.reducer.configToken.token);
-    const [error, setError] = useState(null);
+    const [allRestaurants, setAllRestaurants] = useState(null);
+    const [restSearch, setRestSearch] = useState(null);
+
+    const [token, setToken] = useState(null);
+    const [error, setError] = useState(null);    
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setToken(Cookies.get('token'));
+    }, []);
 
     useEffect(() => {
         const getRestaurants = async() => {
@@ -44,30 +51,32 @@ const FeedPage = () => {
     }, [token]);
 
     useEffect(() => {
-        if(allRestaurants !== null){
-            let arrayCategories = [];
-            for(let i of allRestaurants.restaurants){
-                if(!arrayCategories.includes(i.category)){
-                    arrayCategories.push(i.category);
-                }
-            };
+        const restFilter = () => {
+            const rest = allRestaurants.restaurants.filter((i) => {
+                if( i.name.toLowerCase().includes( query.toLowerCase() ) ){
+                    return true
+                } else {
+                    return false
+                };
+            });
 
-            setCategories(arrayCategories)
+            setRestSearch(rest);
+        };
+
+        if(allRestaurants !== null){
+            restFilter();
         };
     }, [allRestaurants]);
 
-    const handleActiveCategory = (cat) => {
-        if(cat === active){
-            setActive(null);
-        } else {
-            setActive(cat);
-        };
-    };
+
+    console.log(allRestaurants)
+    console.log("busca: ", restSearch);
 
     return(
         <PageArea>
             <div className="title">
-                <span>Ifuture</span>
+                <img src={back} alt="Voltar" onClick={() => navigate("/feed")}/>
+                <span>Busca</span>
             </div>
 
             <div className="body">
@@ -87,23 +96,6 @@ const FeedPage = () => {
                     />
                 </form>
 
-                <div className="categories">
-                    <div className="categories--list">
-                        { categories.length > 0 && categories.map((iten, key) => {
-                            return(
-                                <div 
-                                    key={key} 
-                                    className={active === iten ? "categories--iten active" : "categories--iten"} 
-                                    onClick={() => handleActiveCategory(iten)}
-                                >
-                                    {iten}
-                                </div>
-                            )
-                        }) }
-                    </div>
-                    
-                </div>
-
                 {!allRestaurants && loading && 
                     <div className="loading">
                         <ReactLoading type="spinningBubbles" color="#e8222e"/>
@@ -116,18 +108,13 @@ const FeedPage = () => {
                     </div>
                 }
 
-                <div className="restaurants">
-                    {allRestaurants && allRestaurants.restaurants.length > 0 && 
-                        allRestaurants.restaurants.filter((i) => {
-                            if(!active){
-                                return true
-                            } else if (active && i.category === active){
-                                return true
-                            } else {
-                                return false
-                            };
+                {restSearch && restSearch.length === 0 && 
+                    <div> Não encontramos :&#40; </div>
+                }
 
-                        }).map((iten, index) => {
+                <div className="restaurants">
+                    {restSearch && restSearch.length > 0 &&
+                        restSearch.map((iten, index) => {
                             return(
                                 <div 
                                     className="rest--container" 
@@ -149,33 +136,10 @@ const FeedPage = () => {
                             )
                         })
                     }
-                </div>
-
-            </div>
-
-            <div className="cards">
-                <div>
-                    <img src={homecart} alt=""/>
-                </div>
-
-                <div>
-                    <img 
-                        src={shoppingcart} 
-                        alt=""
-                        onClick={() => alert("Página em construção!")}
-                    />
-                </div>
-
-                <div>
-                    <img 
-                        src={avatarcart} 
-                        alt=""
-                        onClick={() => alert("Página em construção!")}
-                    />
-                </div>
+                </div>                
             </div>
         </PageArea>
-    );
+    )
 };
 
-export default FeedPage;
+export default SearchPage;

@@ -38,6 +38,48 @@ const putAddress = async (token, street, number, neighbourhood, city, state, com
     return req;
 };
 
+const getProfile = async (token) => {
+    const header = {
+        headers: {
+            'auth': token
+        }
+    };
+
+    const req = await axios.get(`${Api_UrlBase}/profile`, header)
+        .then((res) => { return res.data })
+        .catch((error) => { return { error: error.response.data } });
+    
+    return req;
+};
+
+const getRestaurants = async (token) => {
+    const header = {
+        headers: {
+            'auth': token
+        }
+    };
+
+    const req = await axios.get(`${Api_UrlBase}/restaurants`, header)
+        .then((res) => { return res.data })
+        .catch((error) => { return { error: error.response.data } });
+    
+    return req;
+};
+
+const getRestaurantDetails = async (token, id) => {
+    const header = {
+        headers: {
+            'auth': token
+        }
+    };
+
+    const req = await axios.get(`${Api_UrlBase}/restaurants/${id}`, header)
+        .then((res) => { return res.data })
+        .catch((error) => { return { error: error.response.data } });
+    
+    return req;    
+};
+
 export const requestApi = {
     login: async (email, password) => {
         return await postSignIn(email, password);
@@ -47,5 +89,14 @@ export const requestApi = {
     },
     address: async (token, street, number, neighbourhood, city, state, complement = null) => {
         return await putAddress(token, street, number, neighbourhood, city, state, complement = null);
+    },
+    profile: async (token) => {
+        return await getProfile(token);
+    },
+    restaurants: async (token) => {
+        return await getRestaurants(token);
+    },
+    restaurantDetails: async (token, id) => {
+        return await getRestaurantDetails(token, id);
     }
 };

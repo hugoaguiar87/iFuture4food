@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { PageArea } from "./style";
 
 import logo2 from "../../assets/logo2.svg";
@@ -7,9 +8,11 @@ import pass from "../../assets/pass.svg";
 import pass2 from "../../assets/pass2.svg";
 import { requestApi } from "../../helpers/Requests";
 import { doLogin } from "../../helpers/AuthHandler";
+import { setToken } from "../../redux/reducers/tokenReducer";
 
 const SignUpPage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -54,6 +57,7 @@ const SignUpPage = () => {
             setError(data);
         } else {
             doLogin(data.token);
+            dispatch(setToken(data.token));
             navigate("/cadastrar-endereco");
         };
 
