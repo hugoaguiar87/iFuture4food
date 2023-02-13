@@ -2,6 +2,7 @@ import { ModalArea, PageArea } from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReactLoading from "react-loading";
 
 import { requestApi } from "../../helpers/Requests";
 import { setCart } from "../../redux/reducers/cartReducer";
@@ -28,6 +29,7 @@ const RestaurantPage = () => {
 
     useEffect(() => {
         const getRest = async (tokenId, restId) => {
+            setLoading(true);
             const infos = await requestApi.restaurantDetails(tokenId, restId);
             if(infos.error){
                 setError(infos);
@@ -158,6 +160,19 @@ const RestaurantPage = () => {
             </div>
 
             <div className="body">
+
+                { !restInfos && loading &&
+                    <div className="loading">
+                        <ReactLoading type="spinningBubbles" color="#e8222e"/>
+                    </div>
+                }
+
+                { !restInfos && !loading && error &&
+                    <div className="error--message">
+                        Erro: {error.error.message}
+                    </div>
+                }
+
                 {restInfos &&
                     <div className="restaurant">
                         <div className="rest--image">
