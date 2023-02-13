@@ -7,6 +7,7 @@ import SignUpPage from "../pages/SignUp";
 import AddressRegisterPage from "../pages/AddressRegister";
 import SearchPage from "../pages/Search";
 import RestaurantPage from "../pages/Restaurant";
+import NotFoundPage from "../pages/NotFound";
 
 import { isLogged } from "../helpers/AuthHandler";
 
@@ -29,6 +30,8 @@ const Router = () => {
                 <Route path="/cadastrar-endereco" element={ <PrivateRoute> <AddressRegisterPage /> </PrivateRoute> }/>
                 <Route path="/search" element={ <PrivateRoute> <SearchPage/> </PrivateRoute> }/>
                 <Route path="/restaurant/:id" element={ <PrivateRoute> <RestaurantPage/> </PrivateRoute> }/>
+
+                <Route path="*" element= { <NotFoundPage/> }/>
             </Routes>
         </BrowserRouter>
     );
