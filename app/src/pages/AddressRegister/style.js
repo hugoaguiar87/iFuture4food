@@ -94,5 +94,28 @@ export const PageArea = styled.div`
         padding: 10px;
         max-width: 20.5rem;
         opacity: 0.8;
-    }
+    };
+
+    @media (max-width: 700px) {
+        .container{
+            height: 100%;
+            width: 100%;
+        };
+
+        .logo {
+            width: 120px;
+        };
+
+        .tittle span{
+            font-size: 22px;
+        };
+
+        form fieldset{
+            width: 18rem;
+        };
+
+        form button{
+            width: 18rem;
+        };
+    };
 `;

@@ -133,4 +133,11 @@ export const PageArea = styled.div`
         opacity: 0.8;
         font-size: 25px;
     };
+
+    @media (max-width: 700px){
+        .body .restaurants{
+            display: flex;
+            flex-direction: column;
+        };
+    };
 `;

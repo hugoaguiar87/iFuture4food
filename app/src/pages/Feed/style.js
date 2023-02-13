@@ -9,7 +9,7 @@ export const PageArea = styled.div`
     min-height: 100vh;
     font-family: 'Roboto', sans-serif;
     /* margin: 0 530px ; */
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 
     .title{
         border-bottom: 1px solid #DDD;
@@ -167,5 +167,25 @@ export const PageArea = styled.div`
         max-width: 20.5rem;
         opacity: 0.8;
         font-size: 25px;
+    };
+
+    @media (max-width: 700px){
+        .body .restaurants{
+            display: flex;
+            flex-direction: column;
+        };
+
+        .cards{
+            height: 50px;
+            gap: 70px;
+        };
+
+        .cards img{
+            height: 30px;
+        };
+
+        .body .rest--container{
+            width: 18rem;
+        };
     };
 `;

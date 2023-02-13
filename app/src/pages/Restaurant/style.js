@@ -8,7 +8,7 @@ export const PageArea = styled.div`
     justify-content: center;
     min-height: 100vh;
     font-family: 'Roboto', sans-serif;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 
     .title{
         border-bottom: 1px solid #DDD;
@@ -199,6 +199,75 @@ export const PageArea = styled.div`
         opacity: 0.8;
         font-size: 25px;
     };
+
+    @media (max-width: 700px){
+        .body .restaurant{
+            width: 18rem;
+            height: auto;
+        };
+
+        .body .restaurant .rest--name{
+            font-size: 17px;
+        };
+
+        .body .restaurant .rest--categ, .body .restaurant .rest--infos, .body .restaurant .rest--address{
+            font-size: 17px;
+        };
+
+        .body .restaurant .rest--infos span{
+            margin-right: 60px;
+        };
+
+        .body .category--container{
+            padding: 0 8px;
+        };
+
+        .body .category--container .product--area{
+            display: flex;
+            flex-direction: column;
+        };
+
+        .body .category--container .product--area .product--container{
+            width: 18rem;
+            height: 10rem;
+        };
+
+        .body .category--container .product--area .product--container .product--image{
+            width: 7.5rem;
+        };
+
+        .body .category--container .product--area .product--container .product--image img{
+            width: 7.5rem;
+        };
+
+        .body .category--container .product--area .product--container .product--infos .product--details{
+            gap: 7px;
+            padding: 10px;
+
+            .name{
+                font-size: 15px;
+            };
+
+            .description{
+                font-size: 12px;
+            };
+
+            .price{
+                font-size: 16px;
+            };
+        };
+
+        .body .category--container .product--area .product--container .product--infos .product--buttons{
+            span{
+                width: 1.8rem;
+                height: 1.8rem;
+            };
+
+            button{
+                width: 5rem;
+            };
+        };
+    };
 `;
 
 export const ModalArea = styled.div`
@@ -306,5 +375,31 @@ export const ModalArea = styled.div`
     .modal--buttons .big{
         font-size: 20px;
         height: 50px;
+    };
+
+    @media (max-width: 700px){
+        .modal--product{
+            flex-direction: column;
+            align-items: center;
+        };
+
+        .modal--product--image{
+            width: 60%;
+            margin-right: 0;
+            margin-bottom: 10px;
+        };
+
+        .modal--product--infos .buttons--price{
+            margin-top: 10px;
+        };
+
+        .modal--product--infos .buttons--price .price{
+            margin-left: 50px;
+        };
+
+        .modal--buttons{
+            margin-top: 30px;
+        };
+
     };
 `;
